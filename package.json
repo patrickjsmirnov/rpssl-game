@@ -1,0 +1,35 @@
+{
+  "name": "rpssl-game",
+  "version": "1.0.0",
+  "description": "Rock-Paper-Scissors-Lizard game",
+  "main": "index.js",
+  "scripts": {
+    "test": "test",
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
+    "server": "node server.js"
+  },
+  "author": "Dima Smirnov",
+  "license": "ISC",
+  "dependencies": {
+    "@babel/core": "^7.0.0-beta.44",
+    "@babel/preset-env": "^7.0.0-beta.44",
+    "babel-loader": "^8.0.0-beta.2",
+    "express": "^4.16.3",
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1",
+    "socket.io": "^2.1.0"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.0.0-beta.44",
+    "babel-preset-stage-1": "^6.24.1",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^0.28.11",
+    "file-loader": "^1.1.11",
+    "html-webpack-plugin": "^3.2.0",
+    "style-loader": "^0.20.3",
+    "webpack": "^4.5.0",
+    "webpack-cli": "^2.0.14",
+    "webpack-dev-middleware": "^3.1.2"
+  }
+}
