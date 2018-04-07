@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Header from './Header';
+import Game from './Game';
 import './base.css';
 
 class App extends Component {
@@ -8,6 +9,7 @@ class App extends Component {
     return (
       <div>
         <Header />
+        <Game />
       </div>
     );
   }
