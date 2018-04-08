@@ -28,14 +28,25 @@ app.get('/play/', (req, res) => {
 });
 
 io.on('connection', (client) => {
+
+  client.on('getRoomId', () => {
+    client.emit('setRoomId', client.id);
+    let room = `${client.id}`;
+    console.log('join room without link ', room);
+    client.join(room);
+  });
+
+  // добавляем в комнату
+  client.on('joinRoom', (roomId) => {
+    console.log('join room with link', roomId);
+    client.join(roomId);
+    io.to(roomId).emit('ReadyForPlay', true);
+  });
+
   client.on('getClientId', () => {
     client.emit('setClientId', client.id);
-    let nsp = io.of(`/${client.id}`);
-    nsp.on('connection', (client) => {
-      console.log('specific namespace');
-      console.log(client.id);
-    })
   });
+
 });
 
 io.listen(port);
