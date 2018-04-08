@@ -1,0 +1,9 @@
+.share-link {
+  margin: 15px;
+}
+
+.game-items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}

@@ -14,7 +14,6 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(['public']),
     new HtmlWebpackPlugin({
-      title: 'Output Management',
       template: 'client/index.html'
     }),
     new webpack.HotModuleReplacementPlugin(),
