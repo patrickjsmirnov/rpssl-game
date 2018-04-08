@@ -24,4 +24,9 @@ export default class Api {
     this.socket.emit('getClientId');
   }
 
+  resultOfGame(cb, clientGestureObj) {
+    this.socket.on('resultOfGame', resultOfGame => cb(null, resultOfGame))
+    this.socket.emit('selectedGesture', clientGestureObj);
+  }
+
 }

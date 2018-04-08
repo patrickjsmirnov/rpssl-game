@@ -27,6 +27,10 @@ app.get('/play/', (req, res) => {
   res.send('Play is here!')
 });
 
+revealWinner = () => {
+
+}
+
 io.on('connection', (client) => {
 
   client.on('getRoomId', () => {
@@ -45,6 +49,23 @@ io.on('connection', (client) => {
 
   client.on('getClientId', () => {
     client.emit('setClientId', client.id);
+  });
+
+  // отправляем клиентам результаты выборов
+  let gestureArray = [];
+
+  client.on('selectedGesture', (clientIdAndGesture) => {
+    let clientIdAndGestureObj = JSON.parse(clientIdAndGesture)
+    console.log(clientIdAndGestureObj)
+
+    // if (clientIdAndGestureObj.clientId != client.id) {
+
+    io.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGestureObj.gesture);
+
+    // }
+
+    gestureArray.push(clientIdAndGestureObj);
+
   });
 
 });

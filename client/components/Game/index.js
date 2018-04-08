@@ -68,9 +68,28 @@ class Game extends Component {
     this.setState({selectedGesture: gesture});
   }
 
+  play(clientId, roomId, gesture) {
+
+    const clientGestureObj = {
+      clientId: clientId,
+      roomId: roomId,
+      gesture: gesture
+    };
+
+    let clientGestureJson = JSON.stringify(clientGestureObj);
+
+    this.api.resultOfGame((error, resultOfGame) => {
+      console.log(resultOfGame);
+    }, clientGestureJson)
+  }
+
   render() {
     const isLinkShow = this.state.isLinkShow;
     const isReadyPlay = this.state.isReadyPlay;
+    const clientId = this.state.clientId;
+    const gesture = this.state.selectedGesture;
+    const roomId = this.state.roomId;
+
     console.log('gesture', this.state.selectedGesture);
     console.log('client id = ', this.state.clientId);
 
@@ -78,15 +97,16 @@ class Game extends Component {
       this.api.joinRoom(this.state.roomId);
     }
 
-
-
     const link = isLinkShow ? <Link roomId={this.state.roomId}/>: '';
     const gestures = isReadyPlay ? <Gestures chooseGesture={this.chooseGesture}/> : '';
+    const playBtn = gesture ? <button onClick={() => this.play(clientId,roomId, gesture)}>Play</button> : '';
 
     return (
       <div className="game-container">
         {link}
         {gestures}
+        <br/>
+        {playBtn}
       </div>
     )
   }
