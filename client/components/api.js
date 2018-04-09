@@ -11,6 +11,14 @@ export default class Api {
     this.socket.emit('getRoomId');
   }
 
+  firstPlayerJoinRoom(roomId) {
+    this.socket.emit('firstPlayerJoinRoom', roomId);
+  }
+
+  secondPlayerJoinRoom(roomId) {
+    this.socket.emit('secondPlayerJoinRoom', roomId);
+  }
+
   joinRoom(roomId) {
     this.socket.emit('joinRoom', roomId);
   }
@@ -24,9 +32,12 @@ export default class Api {
     this.socket.emit('getClientId');
   }
 
-  resultOfGame(cb, clientGestureObj) {
-    this.socket.on('resultOfGame', resultOfGame => cb(null, resultOfGame))
+  resultOfGame(clientGestureObj) {
     this.socket.emit('selectedGesture', clientGestureObj);
+  }
+
+  waitingForResultOfGame(cb) {
+    this.socket.on('resultOfGame', resultOfGame => cb(null, resultOfGame));
   }
 
 }

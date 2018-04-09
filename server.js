@@ -41,6 +41,11 @@ io.on('connection', (client) => {
   });
 
   // добавляем в комнату
+  client.on('firstPlayerJoinRoom', (roomId) => {
+    client.join(roomId);
+  });
+
+  // добавляем в комнату
   client.on('joinRoom', (roomId) => {
     console.log('join room with link', roomId);
     client.join(roomId);
@@ -52,19 +57,11 @@ io.on('connection', (client) => {
   });
 
   // отправляем клиентам результаты выборов
-  let gestureArray = [];
 
   client.on('selectedGesture', (clientIdAndGesture) => {
     let clientIdAndGestureObj = JSON.parse(clientIdAndGesture)
-    console.log(clientIdAndGestureObj)
 
-    // if (clientIdAndGestureObj.clientId != client.id) {
-
-    io.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGestureObj.gesture);
-
-    // }
-
-    gestureArray.push(clientIdAndGestureObj);
+    io.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGesture);
 
   });
 

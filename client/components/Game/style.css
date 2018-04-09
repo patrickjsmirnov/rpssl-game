@@ -1,9 +1,33 @@
-.share-link {
-  margin: 15px;
+$play-btn-background: #3CC47C;
+
+@font-face {
+    font-family: 'open-sans-bold';
+    src: url('../../assets/fonts/opensansbold.woff') format('woff2');
+}
+
+.game-container {
+  padding: 10px;
 }
 
 .game-items {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+.preloader {
+  background: url('../../assets/images/spinner.svg') center 150px no-repeat;
+  width: 100%;
+  height: 100vh;
+}
+
+.play-btn {
+  width: 140px;
+  height: 40px;
+  background: $play-btn-background;
+  border: 0;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: #fff;
+  font-family: 'open-sans-bold';
 }

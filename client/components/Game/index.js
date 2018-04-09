@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import Api from '../api';
 import Link from '../Link';
-import Gestures from '../Gestures'
+import Gestures from '../Gestures';
+import Result from '../Result';
 import './style.css';
 
 class Game extends Component {
@@ -13,25 +14,32 @@ class Game extends Component {
       isLinkShow: false,
       isReadyPlay: false,
       selectedGesture: null,
-      clientId: null
+      clientId: null,
+      gestureOfOpponent: null,
+      waitingForOpponentGesture: false,
+      resultOfGame: null
     };
 
     this.api = new Api();
 
     this.api.waitForPlay((error, isReadyPlay) => {
-      this.setState({
-        isReadyPlay: isReadyPlay
-      })
+      this.setState({isReadyPlay: isReadyPlay})
     });
 
     this.api.getClientId((error, clientId) => {
-      this.setState({
-        clientId: clientId
-      })
+      this.setState({clientId: clientId})
+    });
+
+    this.api.waitingForResultOfGame((error, resultOfGame) => {
+      let temp = JSON.parse(resultOfGame);
+      if (temp.clientId != this.state.clientId) {
+        this.setState({gestureOfOpponent: temp.gesture})
+      }
     });
 
     this.getParameterByName = this.getParameterByName.bind(this);
     this.chooseGesture = this.chooseGesture.bind(this);
+    this.defineWinner = this.defineWinner.bind(this);
   }
 
   componentDidMount() {
@@ -39,19 +47,29 @@ class Game extends Component {
     const player = this.getParameterByName('player', url);
 
     if (!player) {
-      this.api.getRoomId((error, roomId) => {
-        this.setState({
-          roomId: roomId,
-          isLinkShow: true
+      const roomIdFromSessionStorage = sessionStorage.getItem('roomId');
+
+      if (!roomIdFromSessionStorage) {
+        this.api.getRoomId((error, roomId) => {
+          this.setState({
+            roomId: roomId,
+            isLinkShow: true
+          })
+          sessionStorage.setItem('roomId', roomId);
+          return;
         })
+      }
+
+      this.setState({
+        roomId: roomIdFromSessionStorage,
+        isLinkShow: true
       })
+      this.api.firstPlayerJoinRoom(roomIdFromSessionStorage);
+
+      return;
     }
 
-    else {
-      this.setState({
-        roomId: player
-      })
-    }
+    this.setState({roomId: player})
   }
 
   getParameterByName(name, url) {
@@ -78,9 +96,38 @@ class Game extends Component {
 
     let clientGestureJson = JSON.stringify(clientGestureObj);
 
-    this.api.resultOfGame((error, resultOfGame) => {
-      console.log(resultOfGame);
-    }, clientGestureJson)
+    this.api.resultOfGame(clientGestureJson);
+
+    this.setState({
+      waitingForOpponentGesture: true
+    })
+  }
+
+  defineWinner(ownGesture, opponentGesture) {
+
+    this.setState({waitingForOpponentGesture: false})
+
+    if (ownGesture === opponentGesture) {
+      this.setState({resultOfGame: 'draw'})
+      return;
+    }
+
+    const choices = {
+      rock : {name: "Rock", defeats: ["scissors","lizard"]},
+      paper: {name: "Paper", defeats: ["rock", "spock"]},
+      scissors: {name: "Scissors", defeats: ["paper", "lizard"]},
+      lizard: {name: "Lizard", defeats:["paper","spock"]},
+      spock: {name: "Spock", defeats:["scissors","rock"]}
+    };
+
+    let victory = choices[ownGesture].defeats.indexOf(opponentGesture) > -1;
+
+    if (victory) {
+      this.setState({resultOfGame: 'You win'});
+      return;
+    }
+
+    this.setState({resultOfGame: 'You lose'});
   }
 
   render() {
@@ -89,9 +136,13 @@ class Game extends Component {
     const clientId = this.state.clientId;
     const gesture = this.state.selectedGesture;
     const roomId = this.state.roomId;
+    const gestureOfOpponent = this.state.gestureOfOpponent;
+    const waitingForOpponentGesture = this.state.waitingForOpponentGesture;
+    const resultOfgame = this.state.resultOfGame;
 
-    console.log('gesture', this.state.selectedGesture);
-    console.log('client id = ', this.state.clientId);
+    if (gestureOfOpponent && gesture && waitingForOpponentGesture) {
+      this.defineWinner(gesture, gestureOfOpponent);
+    }
 
     if (!isLinkShow && this.state.roomId && !this.state.isReadyPlay) {
       this.api.joinRoom(this.state.roomId);
@@ -99,14 +150,18 @@ class Game extends Component {
 
     const link = isLinkShow ? <Link roomId={this.state.roomId}/>: '';
     const gestures = isReadyPlay ? <Gestures chooseGesture={this.chooseGesture}/> : '';
-    const playBtn = gesture ? <button onClick={() => this.play(clientId,roomId, gesture)}>Play</button> : '';
+    const playBtn = gesture ? <button className="play-btn" onClick={() => this.play(clientId,roomId, gesture)}>Play</button> : '';
+    const loader = waitingForOpponentGesture ? <div className="preloader"></div> : '';
+    const result = resultOfgame ? <Result result={resultOfgame} ownGesture={gesture} opponentGesture={gestureOfOpponent} /> : '';
 
     return (
       <div className="game-container">
+        {loader}
         {link}
         {gestures}
         <br/>
         {playBtn}
+        {result}
       </div>
     )
   }

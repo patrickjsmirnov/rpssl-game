@@ -6,7 +6,11 @@ class Header extends Component {
   render() {
 
     return (
-      <header>Header</header>
+      <header>
+        <div>
+          The online Rock-Paper-Scissors-Spock-Lizard game
+        </div>
+      </header>
     )
   }
 }

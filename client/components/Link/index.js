@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import './style.css';
 
 class Link extends Component {
   constructor(props) {
@@ -14,8 +15,12 @@ class Link extends Component {
   render() {
 
     return (
-      <div>
-        <a href={this.generateLink(this.props.roomId)} target="_black">{this.generateLink(this.props.roomId)}</a>
+      <div className="share-link">
+        <span>Please share this link:</span>
+        <a
+          href={this.generateLink(this.props.roomId)}
+          target="_black">{this.generateLink(this.props.roomId)}
+        </a>
       </div>
     )
   }
