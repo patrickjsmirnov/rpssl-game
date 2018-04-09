@@ -1,0 +1,33 @@
+@font-face {
+    font-family: 'open-sans-bold';
+    src: url('../../assets/fonts/opensansbold.woff') format('woff2');
+}
+
+.gestures-container {
+  font-size: 1.3rem;
+}
+
+.gestures-title {
+  margin-bottom: 10px;
+  margin-top: 10px;
+}
+
+.gesture-btn {
+  width: 140px;
+  height: 40px;
+  margin-bottom: 10px;
+  background: #fff;
+  border: 2px solid #000;
+  color: #000;
+  cursor: pointer;
+  transition: background 0.5s ease, color 0.5s ease;
+  font-family: 'open-sans-bold';
+  text-transform: uppercase;
+
+  &:hover,
+  &.active {
+    background: #000;
+    color: #fff;
+  }
+
+}
