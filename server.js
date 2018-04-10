@@ -6,22 +6,20 @@ const app = express();
 const config = require('./webpack.config.js');
 const compiler = webpack(config);
 
-const io = require('socket.io')();
-const port = 8000;
-// Tell express to use the webpack-dev-middleware and use the webpack.config.js
-// configuration file as a base.
+
+const http = require('http').Server(app);
+const io = require('socket.io')(http);
+
 app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath
 }));
 
-// Serve the files on port 3000.
-app.listen(process.env.PORT || 3000, function () {
+http.listen(process.env.PORT || 3000, function () {
   console.log('Example app listening on port 3000!\n');
 });
 
-
 io.on('connection', (client) => {
-  
+
   client.on('getRoomId', () => {
     client.emit('setRoomId', client.id);
     let room = `${client.id}`;
@@ -55,6 +53,3 @@ io.on('connection', (client) => {
   });
 
 });
-
-io.listen(port);
-console.log('listening on port ', port);

@@ -3,6 +3,14 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 var webpack = require('webpack');
 
+
+const API_URL = {
+    production: JSON.stringify('https://rpssl-game.herokuapp.com'),
+    development: JSON.stringify('http://localhost:3000')
+}
+
+const environment = process.env.NODE_ENV === 'production' ? 'production': 'development';
+
 module.exports = {
   entry: {
     app: './client/index.js'
@@ -17,7 +25,10 @@ module.exports = {
       template: 'client/index.html'
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.DefinePlugin({
+      'API_URL': API_URL[environment]
+    })
   ],
 
   output: {

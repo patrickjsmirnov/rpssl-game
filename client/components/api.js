@@ -3,8 +3,7 @@ import io from 'socket.io-client';
 export default class Api {
 
   constructor() {
-    this.socket = io(`${window.location.protocol}//${window.location.hostname}:8000`);
-    console.log(`${window.location.protocol}//${window.location.hostname}:8000`);
+    this.socket = io(API_URL);
   }
 
   getRoomId(cb) {
