@@ -10,6 +10,14 @@
   },
   "author": "Dima Smirnov",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patrickjsmirnov/rpssl-game"
+  },
+  "bugs": {
+   "url": "https://github.com/patrickjsmirnov/rpssl-game/issues"
+  },
+  "homepage": "https://rpssl-game.herokuapp.com/",
   "dependencies": {
     "@babel/core": "^7.0.0-beta.44",
     "@babel/preset-env": "^7.0.0-beta.44",
