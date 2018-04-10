@@ -15,24 +15,13 @@ app.use(webpackDevMiddleware(compiler, {
 }));
 
 // Serve the files on port 3000.
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log('Example app listening on port 3000!\n');
 });
 
-// перешли по расшаренной ссылке
-// /play/player=client.id
-app.get('/play/', (req, res) => {
-  const player = req.query.player;
-
-  res.send('Play is here!')
-});
-
-revealWinner = () => {
-
-}
 
 io.on('connection', (client) => {
-
+  
   client.on('getRoomId', () => {
     client.emit('setRoomId', client.id);
     let room = `${client.id}`;
