@@ -4,7 +4,6 @@
   "description": "Rock-Paper-Scissors-Lizard game",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
     "server": "node server.js"
