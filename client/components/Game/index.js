@@ -3,6 +3,8 @@ import Api from '../api';
 import Link from '../Link';
 import Gestures from '../Gestures';
 import Result from '../Result';
+import Header from '../Header';
+import Instructions from '../Instructions';
 import './style.css';
 
 class Game extends Component {
@@ -17,7 +19,8 @@ class Game extends Component {
       clientId: null,
       gestureOfOpponent: null,
       waitingForOpponentGesture: false,
-      resultOfGame: null
+      resultOfGame: null,
+      isInstructionsOpen: false
     };
 
     this.api = new Api();
@@ -40,6 +43,8 @@ class Game extends Component {
     this.getParameterByName = this.getParameterByName.bind(this);
     this.chooseGesture = this.chooseGesture.bind(this);
     this.defineWinner = this.defineWinner.bind(this);
+    this.openInstructions = this.openInstructions.bind(this);
+    this.closeInstructions = this.closeInstructions.bind(this);
   }
 
   componentDidMount() {
@@ -87,26 +92,20 @@ class Game extends Component {
   }
 
   play(clientId, roomId, gesture) {
-
     const clientGestureObj = {
       clientId: clientId,
       roomId: roomId,
       gesture: gesture
     };
-
     let clientGestureJson = JSON.stringify(clientGestureObj);
-
     this.api.resultOfGame(clientGestureJson);
-
     this.setState({
       waitingForOpponentGesture: true
     })
   }
 
   defineWinner(ownGesture, opponentGesture) {
-
     this.setState({waitingForOpponentGesture: false})
-
     if (ownGesture === opponentGesture) {
       this.setState({resultOfGame: 'draw'})
       return;
@@ -121,13 +120,19 @@ class Game extends Component {
     };
 
     let victory = choices[ownGesture].defeats.indexOf(opponentGesture) > -1;
-
     if (victory) {
       this.setState({resultOfGame: 'You win'});
       return;
     }
-
     this.setState({resultOfGame: 'You lose'});
+  }
+
+  openInstructions() {
+    this.setState({isInstructionsOpen: true})
+  }
+
+  closeInstructions() {
+    this.setState({isInstructionsOpen: false})
   }
 
   render() {
@@ -139,6 +144,7 @@ class Game extends Component {
     const gestureOfOpponent = this.state.gestureOfOpponent;
     const waitingForOpponentGesture = this.state.waitingForOpponentGesture;
     const resultOfgame = this.state.resultOfGame;
+    const isInstructionsOpen = this.state.isInstructionsOpen;
 
     if (gestureOfOpponent && gesture && waitingForOpponentGesture) {
       this.defineWinner(gesture, gestureOfOpponent);
@@ -153,15 +159,20 @@ class Game extends Component {
     const playBtn = gesture ? <button className="play-btn" onClick={() => this.play(clientId,roomId, gesture)}>Play</button> : '';
     const loader = waitingForOpponentGesture ? <div className="preloader"></div> : '';
     const result = resultOfgame ? <Result result={resultOfgame} ownGesture={gesture} opponentGesture={gestureOfOpponent} /> : '';
+    const instructions = isInstructionsOpen ? <Instructions closeInstructions={this.closeInstructions}/> : '';
 
     return (
-      <div className="game-container">
-        {loader}
-        {link}
-        {gestures}
-        <br/>
-        {playBtn}
-        {result}
+      <div>
+        <Header openInstructions={this.openInstructions} />
+        <div className="game-container">
+          {loader}
+          {link}
+          {gestures}
+          <br/>
+          {playBtn}
+          {result}
+          {instructions}
+        </div>
       </div>
     )
   }

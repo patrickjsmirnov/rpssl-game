@@ -1,0 +1,72 @@
+@font-face {
+  font-family: 'open-sans-bold';
+  src: url('../../assets/fonts/opensansbold.woff') format('woff2');
+}
+
+.instructions-wrapper {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.instructions-modal-window {
+  position: absolute;
+  width: 100%;
+  max-width: 800px;
+  background-color: #fff;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 50px;
+}
+
+.instructions-window-container {
+  position: relative;
+  padding: 10px;
+}
+
+.instructions-window-close-btn {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  background: url('../../assets/images/close.svg');
+  border: 0;
+  cursor: pointer;
+}
+
+.instructions-window-content {
+  font-size: 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  p {
+    margin-bottom: 2px;
+  }
+
+  .title {
+    font-family: 'open-sans-bold';
+    font-size: 1.6rem;
+    margin-bottom: 10px;
+  }
+}
+
+.instructions-img {
+  width: 60%;
+  height: auto;
+
+  @media (max-width: 500px) {
+    width: 100%;
+  }
+}

@@ -1,7 +1,28 @@
+$instructions-btn-bg: #3CC47C;
+
+@font-face {
+  font-family: 'open-sans-bold';
+  src: url('../../assets/fonts/opensansbold.woff') format('woff2');
+}
+
 header {
+  display: flex;
+  align-items: center;
   min-height: 50px;
   background: black;
   color: #fff;
   padding: 10px;
   font-size: 1.5rem;
+}
+
+.instructions-btn {
+  background-color: $instructions-btn-bg;
+  border: 0;
+  color: #fff;
+  font-family: 'open-sans-bold';
+  height: 40px;
+  padding: 0 10px;
+  text-transform: uppercase;
+  margin-right: 15px;
+  cursor: pointer;
 }
