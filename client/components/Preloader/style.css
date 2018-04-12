@@ -1,0 +1,11 @@
+.preloader {
+  background: url('../../assets/images/spinner.svg') center 150px no-repeat;
+  width: 100%;
+  height: 100vh;
+}
+
+.preloader-title {
+  font-size: 2rem;
+  text-align: center;
+  padding-top: 80px;
+}

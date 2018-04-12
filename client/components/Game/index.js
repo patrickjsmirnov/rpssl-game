@@ -5,6 +5,7 @@ import Gestures from '../Gestures';
 import Result from '../Result';
 import Header from '../Header';
 import Instructions from '../Instructions';
+import Preloader from '../Preloader';
 import './style.css';
 
 class Game extends Component {
@@ -157,7 +158,7 @@ class Game extends Component {
     const link = isLinkShow ? <Link roomId={this.state.roomId}/>: '';
     const gestures = isReadyPlay ? <Gestures chooseGesture={this.chooseGesture}/> : '';
     const playBtn = gesture ? <button className="play-btn" onClick={() => this.play(clientId,roomId, gesture)}>Play</button> : '';
-    const loader = waitingForOpponentGesture ? <div className="preloader"></div> : '';
+    const loader = waitingForOpponentGesture ? <Preloader /> : '';
     const result = resultOfgame ? <Result result={resultOfgame} ownGesture={gesture} opponentGesture={gestureOfOpponent} /> : '';
     const instructions = isInstructionsOpen ? <Instructions closeInstructions={this.closeInstructions}/> : '';
 
