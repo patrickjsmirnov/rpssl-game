@@ -1,12 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-var webpack = require('webpack');
-
+const webpack = require('webpack');
 
 const API_URL = {
-    production: JSON.stringify('https://rpssl-game.herokuapp.com'),
-    development: JSON.stringify('http://localhost:3000')
+  production: JSON.stringify('https://rpssl-game.herokuapp.com'),
+  development: JSON.stringify('http://localhost:3000')
 }
 
 const environment = process.env.NODE_ENV === 'production' ? 'production': 'development';
@@ -16,8 +15,9 @@ module.exports = {
     app: './client/index.js'
   },
 
-  devtool: 'inline-source-map',
+  mode: environment,
 
+  devtool: 'inline-source-map',
 
   plugins: [
     new CleanWebpackPlugin(['public']),
