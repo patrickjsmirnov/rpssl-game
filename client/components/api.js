@@ -23,7 +23,7 @@ export default class Api {
     this.socket.emit('joinRoom', roomId);
   }
 
-  waitForPlay(cb) {
+  waitingForPlay(cb) {
     this.socket.on('ReadyForPlay', isReadyPlay => cb(null, isReadyPlay))
   }
 

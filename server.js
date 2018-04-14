@@ -1,12 +1,9 @@
-const express = require('express');
-const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
-
-const app = express();
+const webpack = require('webpack');
 const config = require('./webpack.config.js');
 const compiler = webpack(config);
-
-
+const express = require('express');
+const app = express();
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 
@@ -23,7 +20,6 @@ io.on('connection', (client) => {
   client.on('getRoomId', () => {
     client.emit('setRoomId', client.id);
     let room = `${client.id}`;
-    console.log('join room without link ', room);
     client.join(room);
   });
 
@@ -34,7 +30,6 @@ io.on('connection', (client) => {
 
   // добавляем в комнату
   client.on('joinRoom', (roomId) => {
-    console.log('join room with link', roomId);
     client.join(roomId);
     io.to(roomId).emit('ReadyForPlay', true);
   });
@@ -47,7 +42,6 @@ io.on('connection', (client) => {
 
   client.on('selectedGesture', (clientIdAndGesture) => {
     let clientIdAndGestureObj = JSON.parse(clientIdAndGesture)
-
     io.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGesture);
 
   });

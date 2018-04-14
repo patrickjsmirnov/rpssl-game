@@ -26,7 +26,7 @@ class Game extends Component {
 
     this.api = new Api();
 
-    this.api.waitForPlay((error, isReadyPlay) => {
+    this.api.waitingForPlay((error, isReadyPlay) => {
       this.setState({isReadyPlay: isReadyPlay})
     });
 
