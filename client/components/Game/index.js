@@ -36,9 +36,9 @@ class Game extends Component {
 
     this.api.waitingForResultOfGame((error, resultOfGame) => {
       let temp = JSON.parse(resultOfGame);
-      if (temp.clientId != this.state.clientId) {
+
+      if ((this.state.isLinkShow || !this.state.isLinkShow && temp.ownerLink) && temp.clientId != this.state.clientId)
         this.setState({gestureOfOpponent: temp.gesture})
-      }
     });
 
     this.getParameterByName = this.getParameterByName.bind(this);
@@ -70,8 +70,8 @@ class Game extends Component {
         roomId: roomIdFromSessionStorage,
         isLinkShow: true
       })
-      this.api.firstPlayerJoinRoom(roomIdFromSessionStorage);
 
+      this.api.firstPlayerJoinRoom(roomIdFromSessionStorage);
       return;
     }
 
@@ -96,13 +96,12 @@ class Game extends Component {
     const clientGestureObj = {
       clientId: clientId,
       roomId: roomId,
-      gesture: gesture
+      gesture: gesture,
+      ownerLink: this.state.isLinkShow
     };
     let clientGestureJson = JSON.stringify(clientGestureObj);
     this.api.resultOfGame(clientGestureJson);
-    this.setState({
-      waitingForOpponentGesture: true
-    })
+    this.setState({waitingForOpponentGesture: true})
   }
 
   defineWinner(ownGesture, opponentGesture) {

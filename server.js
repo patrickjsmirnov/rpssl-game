@@ -41,8 +41,13 @@ io.on('connection', (client) => {
   // отправляем клиентам результаты выборов
 
   client.on('selectedGesture', (clientIdAndGesture) => {
-    let clientIdAndGestureObj = JSON.parse(clientIdAndGesture)
-    io.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGesture);
+    let clientIdAndGestureObj = JSON.parse(clientIdAndGesture);
+    console.log(clientIdAndGestureObj);
+    if (clientIdAndGestureObj.ownerLink) {
+      io.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGesture);
+    } else {
+      client.broadcast.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGesture);
+    }
 
   });
 
