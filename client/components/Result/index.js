@@ -28,6 +28,8 @@ class Result extends Component {
           <span>Game result: {this.props.result}</span>
           <span>Your gesture: {this.props.ownGesture}</span>
           <span>Opponent gesture: {this.props.opponentGesture}</span>
+
+          <button className="play-again-btn">Play again</button>
         </div>
 
       </div>

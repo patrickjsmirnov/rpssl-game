@@ -15,10 +15,6 @@ export default class Api {
     this.socket.emit('firstPlayerJoinRoom', roomId);
   }
 
-  secondPlayerJoinRoom(roomId) {
-    this.socket.emit('secondPlayerJoinRoom', roomId);
-  }
-
   joinRoom(roomId) {
     this.socket.emit('joinRoom', roomId);
   }
