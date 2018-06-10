@@ -16,6 +16,7 @@ export default class Api {
   }
 
   joinRoom(roomId) {
+    console.log('call joinRoom');
     this.socket.emit('joinRoom', roomId);
   }
 

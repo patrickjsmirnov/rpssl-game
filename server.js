@@ -11,11 +11,14 @@ app.use(webpackDevMiddleware(compiler, {
   publicPath: config.output.publicPath
 }));
 
+let numberClientsInRoom = {}
+
 http.listen(process.env.PORT || 3000, function () {
   console.log('Example app listening on port 3000!\n');
 });
 
 io.on('connection', (client) => {
+
 
   client.on('getRoomId', () => {
     client.emit('setRoomId', client.id);
@@ -23,31 +26,32 @@ io.on('connection', (client) => {
     client.join(room);
   });
 
-  // добавляем в комнату
   client.on('firstPlayerJoinRoom', (roomId) => {
     client.join(roomId);
   });
 
-  // добавляем в комнату
   client.on('joinRoom', (roomId) => {
-    client.join(roomId);
-    io.to(roomId).emit('ReadyForPlay', true);
+
+    console.log('check = ', numberClientsInRoom[roomId]);
+    if (!numberClientsInRoom[roomId]) {
+      numberClientsInRoom[roomId] = 1;
+      client.join(roomId);
+      io.to(roomId).emit('ReadyForPlay', true);
+    }
+
+    else {
+      console.log('blyaat');
+    }
+
   });
 
   client.on('getClientId', () => {
     client.emit('setClientId', client.id);
   });
 
-  // отправляем клиентам результаты выборов
-
   client.on('selectedGesture', (clientIdAndGesture) => {
     let clientIdAndGestureObj = JSON.parse(clientIdAndGesture);
-    console.log(clientIdAndGestureObj);
-    if (clientIdAndGestureObj.ownerLink) {
-      io.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGesture);
-    } else {
-      client.broadcast.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGesture);
-    }
+    io.to(clientIdAndGestureObj.roomId).emit('resultOfGame', clientIdAndGesture);
 
   });
 

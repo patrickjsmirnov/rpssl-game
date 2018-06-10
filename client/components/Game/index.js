@@ -150,7 +150,10 @@ class Game extends Component {
       this.defineWinner(gesture, gestureOfOpponent);
     }
 
-    if (!isLinkShow && this.state.roomId && !this.state.isReadyPlay) {
+    // присоединяемся к комнате, которой ждет первый игрок
+    // вызывается 2 раза
+    if (!isLinkShow && this.state.roomId && !this.state.isReadyPlay && !resultOfgame) {
+      console.log('joinRoom in index.js');
       this.api.joinRoom(this.state.roomId);
     }
 
